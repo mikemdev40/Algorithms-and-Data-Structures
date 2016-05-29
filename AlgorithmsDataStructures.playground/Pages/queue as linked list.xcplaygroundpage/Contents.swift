@@ -33,7 +33,6 @@ class Queue {  //linked list implementation
         count += 1
     }
     
-    //NEED TO FIX TO ACCOUNT FOR IF ONLY ONE NODE
     //O(N) time (single while loop that iterates throgh)
     func dequeue() -> Node? {
         if start == nil || end == nil {
@@ -64,7 +63,7 @@ class Queue {  //linked list implementation
             print(node!.data)
             node = node!.nextNode
         }
-        print("\n")
+        print("")
     }
     
     func getCount() -> Int {
@@ -78,16 +77,22 @@ myQueue.enqueue(Node(data: 6))
 myQueue.enqueue(Node(data: 10))
 myQueue.enqueue(Node(data: 12))
 myQueue.traverse()
+myQueue.count
 
 myQueue.dequeue()?.data
 myQueue.traverse()
+myQueue.count
 
 myQueue.dequeue()?.data
 myQueue.traverse()
+myQueue.count
 
 myQueue.dequeue()?.data
 myQueue.traverse()
+myQueue.count
 
 myQueue.dequeue()?.data
+myQueue.count
+
 
 
