@@ -7,5 +7,6 @@
         <page name='linked list'/>
         <page name='recursion'/>
         <page name='binary search'/>
+        <page name='queue as linked list'/>
     </pages>
 </playground>
