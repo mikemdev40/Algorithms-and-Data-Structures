@@ -13,6 +13,18 @@ class Node<T: Comparable> {
     init(data: T) {
         self.data = data
     }
+    
+    private func traverseNode() {
+        if let _ = leftChild {
+            leftChild?.traverseNode()
+        }
+        
+        print("\(data)")
+        
+        if let _ = rightChild {
+            rightChild?.traverseNode()
+        }
+    }
 }
 
 class BalancedTree<T: Comparable> {
@@ -22,9 +34,30 @@ class BalancedTree<T: Comparable> {
     func insertData(dataToInsert: T) {
         let newNode = Node(data: dataToInsert)
         
+        if let root = root {
+            insertNodeIntoTree(newNode, currentNode: root)
+        } else {
+            root = newNode
+        }
+    }
+    
+    private func insertNodeIntoTree(nodeToInsert: Node<T>, currentNode: Node<T>) {
         
-        
-        
+        if nodeToInsert.data < currentNode.data { //if the value is less than current value, then check left child...
+            if let leftchild = currentNode.leftChild {  //if there is a left child already...
+                insertNodeIntoTree(nodeToInsert, currentNode: leftchild) //then make recursive call with the left child as the current node
+            } else {
+                currentNode.leftChild = nodeToInsert  //if there isn't a left child already, then set left child to the node to insert
+            }
+        } else if nodeToInsert.data > currentNode.data {  //if the value is greater than current value, then check right child...
+            if let rightChild = currentNode.rightChild {  //if there is a right child already...
+                insertNodeIntoTree(nodeToInsert, currentNode: rightChild)  //then make recursive call with the right child as the current node
+            } else {
+                currentNode.rightChild = nodeToInsert  //if there isn't a right child already, then set right child to the node to insert
+            }
+        } else {  //node's value equal's current value
+            print("this value has already been added so no new node has been created")
+        }
     }
     
     func deleteValue(valueToDelete: T) {
@@ -80,7 +113,11 @@ class BalancedTree<T: Comparable> {
     }
     
     func traverseTreeInOrder() {  //starting with the minimum value, visit its root, then its root's right substree, which may contain another tree, so we do this recursively (i.e. when a right node contains another tree, then visit left, root, right, etc.); work our way up the the entire tree's root, then down the right side in a similar way (left, root, right in recursive manner)
-        
+        if let root = root {
+            root.traverseNode()
+        } else {
+            print("no nodes to traverse!")
+        }
     }
     
     func searchForValue(valueToFind: T) {
@@ -92,8 +129,10 @@ class BalancedTree<T: Comparable> {
 
 let myTree = BalancedTree<String>()
 
-myTree.root = Node(data: "mike")
+myTree.insertData("matt")
+myTree.insertData("sam")
+myTree.insertData("john")
+myTree.insertData("jesse")
+myTree.insertData("paul")
 
-myTree.root?.data
-
-myTree.getMinNode()?.data
+myTree.traverseTreeInOrder()
