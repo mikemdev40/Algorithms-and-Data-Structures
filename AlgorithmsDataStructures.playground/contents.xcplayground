@@ -8,5 +8,6 @@
         <page name='recursion'/>
         <page name='binary search'/>
         <page name='queue as linked list'/>
+        <page name='balanced BST (AVL)'/>
     </pages>
 </playground>
