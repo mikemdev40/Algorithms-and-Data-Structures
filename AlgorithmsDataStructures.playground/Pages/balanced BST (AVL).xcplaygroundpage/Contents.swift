@@ -1,6 +1,8 @@
+//: Mike Miller
+//: Working through https://www.udemy.com/algorithms-and-data-structures/learn/v4/content
+//: Algorithms & Data Structures In Java, Part I (Udemy)
 
 import Foundation
-
 
 class Node<T: Comparable> {
     
@@ -8,7 +10,7 @@ class Node<T: Comparable> {
     var leftChild: Node?
     var rightChild: Node?
     var parent: Node?
-    var height: Int = 0
+    var balance: Int = 0  //we want the difference between the heights of the left and right subtrees to be at most 1 (i.e. ensure that "balance" = abs(height(left) - height(right)) <= 1)
     
     init(data: T) {
         self.data = data
@@ -57,6 +59,26 @@ class BalancedTree<T: Comparable> {
             }
         } else {  //node's value equal's current value
             print("this value has already been added so no new node has been created")
+        }
+        rebalanceTree(currentNode)
+    }
+    
+    private func rebalanceTree(nodeToRebalanceAround: Node<T>) {
+        calculateBalanceFor(nodeToRebalanceAround)
+    }
+    
+    private func calculateBalanceFor(node: Node<T>) {
+        node.balance = getHeightOfSubtreeOf(node.leftChild) - getHeightOfSubtreeOf(node.rightChild)
+        print(node.data, " ", node.balance)
+    }
+    
+    private func getHeightOfSubtreeOf(node: Node<T>?) -> Int {
+        if let node = node {
+            let maxChildHeight = max(getHeightOfSubtreeOf(node.leftChild), getHeightOfSubtreeOf(node.rightChild))
+            let subtreeHeight = maxChildHeight + 1
+            return subtreeHeight
+        } else {
+            return -1  // height value for when a child does not exist for a specific node
         }
     }
     
@@ -125,8 +147,6 @@ class BalancedTree<T: Comparable> {
     }
 }
 
-
-
 let myTree = BalancedTree<String>()
 
 myTree.insertData("matt")
@@ -134,5 +154,8 @@ myTree.insertData("sam")
 myTree.insertData("john")
 myTree.insertData("jesse")
 myTree.insertData("paul")
+myTree.insertData("brian")
+myTree.insertData("jimmy")
+myTree.insertData("adam")
 
 myTree.traverseTreeInOrder()

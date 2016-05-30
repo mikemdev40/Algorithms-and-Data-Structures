@@ -1,5 +1,5 @@
 //: Mike Miller
-// Working through book by Wayne Bishop: "Swift Algorithms and Data Structures"  http://waynewbishop.com/swift/big-o-notation
+//: Working through book by Wayne Bishop: "Swift Algorithms and Data Structures"  http://waynewbishop.com/swift/big-o-notation
 
 import Foundation
 

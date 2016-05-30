@@ -1,3 +1,6 @@
+//: Mike Miller
+//: Working through https://www.udemy.com/algorithms-and-data-structures/learn/v4/content
+//: Algorithms & Data Structures In Java, Part I (Udemy)
 
 import Foundation
 
