@@ -50,26 +50,71 @@ class BalancedTree<T: Comparable> {
                 insertNodeIntoTree(nodeToInsert, currentNode: leftchild) //then make recursive call with the left child as the current node
             } else {
                 currentNode.leftChild = nodeToInsert  //if there isn't a left child already, then set left child to the node to insert
+                nodeToInsert.parent = currentNode
             }
+            
+            if let parent = currentNode.parent {
+                rebalanceTree(parent)
+            }
+            
         } else if nodeToInsert.data > currentNode.data {  //if the value is greater than current value, then check right child...
             if let rightChild = currentNode.rightChild {  //if there is a right child already...
                 insertNodeIntoTree(nodeToInsert, currentNode: rightChild)  //then make recursive call with the right child as the current node
             } else {
                 currentNode.rightChild = nodeToInsert  //if there isn't a right child already, then set right child to the node to insert
+                nodeToInsert.parent = currentNode
             }
+            
+            if let parent = currentNode.parent {
+                rebalanceTree(parent)
+            }
+            
         } else {  //node's value equal's current value
             print("this value has already been added so no new node has been created")
         }
-        rebalanceTree(currentNode)
+        print("")
     }
     
-    private func rebalanceTree(nodeToRebalanceAround: Node<T>) {
-        calculateBalanceFor(nodeToRebalanceAround)
+    //we want to maintain balance at every node such that the absolute value of the balance value is no greater than 1; if balance ever gets less than -1 or greater than 1, there will need to be rotation left or right to maintain the balance; balance of any node is determined by comparing the height of its left child to the height of its right child and if the difference between the heights of the left and right subtrees differs by MORE THAN ONE, then rebalancing is required
+    private func rebalanceTree(nodeToRebalance: Node<T>) {
+        print("rebalancing \(nodeToRebalance.data)")
+        calculateBalanceFor(nodeToRebalance)
+        
+        if nodeToRebalance.balance < -1 {  //becoming right unbalanced
+            
+            print("UNBALANCED: RIGHT HEAVY")
+            if getHeightOfSubtreeOf(nodeToRebalance.rightChild?.rightChild) > getHeightOfSubtreeOf(nodeToRebalance.rightChild?.leftChild) {  //the "doubly right" heavy case
+                print("need to rotate \(nodeToRebalance.data) LEFT")
+                rotateRight(nodeToRebalance)
+            } else {  //the right-left right heavy case
+                print("need to rotate \(nodeToRebalance.rightChild?.data) RIGHT and then \(nodeToRebalance.data) LEFT")
+                rotateLeft(nodeToRebalance.leftChild)
+                rotateRight(nodeToRebalance)
+            }
+            
+        } else if nodeToRebalance.balance > 1 {  //becoming left unbalanced
+            
+            print("UNBALANCED: LEFT HEAVY")
+            if getHeightOfSubtreeOf(nodeToRebalance.leftChild?.leftChild) > getHeightOfSubtreeOf(nodeToRebalance.leftChild?.rightChild) {  //the "doubly left" heavy case
+                print("need to rotate \(nodeToRebalance.data) RIGHT")
+                rotateRight(nodeToRebalance)
+            } else {  //the left-right left heavy case
+                print("need to rotate \(nodeToRebalance.leftChild?.data) LEFT and then \(nodeToRebalance.data) RIGHT")
+                rotateLeft(nodeToRebalance.leftChild)
+                rotateRight(nodeToRebalance)
+            }
+            
+        } else {
+            print("\(nodeToRebalance.data) is balanced with balance = \(nodeToRebalance.balance)")
+        }
     }
     
+    //finds the heights of each subtree and determines balance value by: left subtree height - right subtree height
     private func calculateBalanceFor(node: Node<T>) {
-        node.balance = getHeightOfSubtreeOf(node.leftChild) - getHeightOfSubtreeOf(node.rightChild)
-        print(node.data, " ", node.balance)
+        let leftHeight = getHeightOfSubtreeOf(node.leftChild)
+        let rightHeight = getHeightOfSubtreeOf(node.rightChild)
+        node.balance = leftHeight - rightHeight
+        print(node.data, "left subtree = \(leftHeight)", "right subtree = \(rightHeight)", "balance = \(node.balance)")
     }
     
     private func getHeightOfSubtreeOf(node: Node<T>?) -> Int {
@@ -126,11 +171,11 @@ class BalancedTree<T: Comparable> {
         return currentNode
     }
     
-    private func rotateLeft() {
+    private func rotateLeft(nodeToRotate: Node<T>?) {
         
     }
     
-    private func rotateRight() {
+    private func rotateRight(nodeToRotate: Node<T>?) {
         
     }
     
@@ -147,15 +192,48 @@ class BalancedTree<T: Comparable> {
     }
 }
 
-let myTree = BalancedTree<String>()
+//let myTree = BalancedTree<String>()
 
-myTree.insertData("matt")
-myTree.insertData("sam")
-myTree.insertData("john")
-myTree.insertData("jesse")
-myTree.insertData("paul")
-myTree.insertData("brian")
-myTree.insertData("jimmy")
-myTree.insertData("adam")
+//TRIAL 1
+//myTree.insertData("matt")
+//myTree.insertData("sam")
+//myTree.insertData("john")
+//myTree.insertData("jesse")
+//myTree.insertData("paul")
+//myTree.insertData("joel")
 
-myTree.traverseTreeInOrder()
+//myTree.insertData("jimmy")
+//myTree.insertData("adam")
+
+//TRIAL 2
+//myTree.insertData("matt")
+//myTree.insertData("aaron")
+//myTree.insertData("clark")
+
+//myTree.insertData("matt")
+//myTree.insertData("clark")
+//myTree.insertData("aaron")
+
+//myTree.traverseTreeInOrder()
+
+let myTree2 = BalancedTree<Int>()
+
+//myTree2.insertData(2)
+//myTree2.insertData(1)
+//myTree2.insertData(4)
+//myTree2.insertData(3)
+//myTree2.insertData(5)
+//myTree2.insertData(6)
+
+//myTree2.insertData(4)
+//myTree2.insertData(2)
+//myTree2.insertData(1)
+//myTree2.insertData(3)
+//myTree2.insertData(6)
+//myTree2.insertData(5)
+//myTree2.insertData(15)
+//myTree2.insertData(7)
+//myTree2.insertData(14)
+//myTree2.insertData(16)
+
+myTree2.traverseTreeInOrder()
