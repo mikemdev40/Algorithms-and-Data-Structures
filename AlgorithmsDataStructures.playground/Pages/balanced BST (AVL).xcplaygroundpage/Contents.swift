@@ -110,6 +110,10 @@ class BalancedTree<T: Comparable> {
         } else {
             print("\(nodeToRebalance.data) is balanced with balance = \(nodeToRebalance.balance)")
         }
+        
+        if let parent = nodeToRebalance.parent {
+            rebalanceTree(parent)
+        }
     }
     
     //finds the heights of each subtree and determines balance value by: left subtree height - right subtree height
@@ -265,28 +269,17 @@ class BalancedTree<T: Comparable> {
 
 let myTree2 = BalancedTree<Int>()
 
-//myTree2.insertData(2)
-//myTree2.insertData(1)
-//myTree2.insertData(4)
-//myTree2.insertData(3)
-//myTree2.insertData(5)
-//myTree2.insertData(6)
-
-//myTree2.insertData(4)
-//myTree2.insertData(2)
-//myTree2.insertData(1)
-//myTree2.insertData(3)
-//myTree2.insertData(6)
-//myTree2.insertData(5)
-//myTree2.insertData(15)
-//myTree2.insertData(7)
-//myTree2.insertData(14)
-//myTree2.insertData(16)
-
 myTree2.insertData(3)
 myTree2.insertData(2)
 myTree2.insertData(1)
 myTree2.insertData(4)
 myTree2.insertData(5)
+myTree2.insertData(6)
+myTree2.insertData(7)
+myTree2.insertData(16)
+myTree2.insertData(15)
+
+
+
 
 myTree2.traverseTreeInOrder()
