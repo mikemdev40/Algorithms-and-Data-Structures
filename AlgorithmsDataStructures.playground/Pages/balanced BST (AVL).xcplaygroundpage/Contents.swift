@@ -66,7 +66,7 @@ class BalancedTree<T: Comparable> {
             } else {
                 currentNode.rightChild = nodeToInsert  //if there isn't a right child already, then set right child to the node to insert
                 nodeToInsert.parent = currentNode
-                print("inserted right child of \(currentNode.data): \(currentNode.rightChild?.data)")
+                print("inserted right child of \(currentNode.data)")
                 if let parent = currentNode.parent {
                     rebalanceTree(parent)
                 }
@@ -190,7 +190,11 @@ class BalancedTree<T: Comparable> {
             root = nodeToRotate?.rightChild
             root?.parent = nil
         } else {
-            nodeToRotate?.parent?.rightChild = nodeToRotate?.rightChild
+            if nodeToRotate === nodeToRotate?.parent?.rightChild {  //the node being rotated is the right child of its parent (i.e. as part of a single left rotation)
+                nodeToRotate?.parent?.rightChild = nodeToRotate?.rightChild
+            } else {  //the node being rotated is the left child of its parent (i.e. as part of a double rotation)
+                nodeToRotate?.parent?.leftChild = nodeToRotate?.rightChild
+            }
             nodeToRotate?.rightChild?.parent = nodeToRotate?.parent
         }
         
@@ -216,7 +220,11 @@ class BalancedTree<T: Comparable> {
             root = nodeToRotate?.leftChild
             root?.parent = nil
         } else {
-            nodeToRotate?.parent?.leftChild = nodeToRotate?.leftChild
+            if nodeToRotate === nodeToRotate?.parent?.leftChild {  //the node being rotated is the left child of its parent (i.e. as part of a single right rotation)
+                nodeToRotate?.parent?.leftChild = nodeToRotate?.leftChild
+            } else {  //the node being rotated is the right child of its parent (i.e. as part of a double rotation)
+                nodeToRotate?.parent?.rightChild = nodeToRotate?.leftChild
+            }
             nodeToRotate?.leftChild?.parent = nodeToRotate?.parent
         }
         
@@ -269,6 +277,26 @@ class BalancedTree<T: Comparable> {
 
 let myTree2 = BalancedTree<Int>()
 
+//WORKING RIGHT ROTATION: variation 1
+//myTree2.insertData(10)
+//myTree2.insertData(11)
+//myTree2.insertData(5)
+//myTree2.insertData(4)
+//myTree2.insertData(7)
+//myTree2.insertData(3)
+//myTree2.insertData(1)
+
+//WORKING RIGHT ROATION: variation 2
+//myTree2.insertData(3)
+//myTree2.insertData(2)
+//myTree2.insertData(1)
+
+//WORKING RIGHT ROATION: variation 3  FIXED!
+//myTree2.insertData(3)
+//myTree2.insertData(5)
+//myTree2.insertData(4)
+
+//from PDF:  https://jriera.webs.ull.es/Docencia/avl_handout.pdf
 myTree2.insertData(3)
 myTree2.insertData(2)
 myTree2.insertData(1)
@@ -279,7 +307,13 @@ myTree2.insertData(7)
 myTree2.insertData(16)
 myTree2.insertData(15)
 
-
-
-
 myTree2.traverseTreeInOrder()
+myTree2.root?.data
+myTree2.root?.leftChild?.data
+myTree2.root?.leftChild?.leftChild?.data
+myTree2.root?.leftChild?.rightChild?.data
+myTree2.root?.rightChild?.data
+myTree2.root?.rightChild?.leftChild?.data
+myTree2.root?.rightChild?.rightChild?.data
+myTree2.root?.rightChild?.rightChild?.leftChild?.data
+myTree2.root?.rightChild?.rightChild?.rightChild?.data
