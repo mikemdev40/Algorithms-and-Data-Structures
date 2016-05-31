@@ -35,10 +35,10 @@ class BalancedTree<T: Comparable> {
     
     func insertData(dataToInsert: T) {
         
-        print("INSERTING \(dataToInsert)")
         let newNode = Node(data: dataToInsert)
         
         if let root = root {
+            print("root = \(root.data)")
             insertNodeIntoTree(newNode, currentNode: root)
         } else {
             root = newNode
@@ -47,28 +47,29 @@ class BalancedTree<T: Comparable> {
     
     private func insertNodeIntoTree(nodeToInsert: Node<T>, currentNode: Node<T>) {
         
+        print("INSERTING \(nodeToInsert.data), at \(currentNode.data)")
+
         if nodeToInsert.data < currentNode.data { //if the value is less than current value, then check left child...
             if let leftchild = currentNode.leftChild {  //if there is a left child already...
                 insertNodeIntoTree(nodeToInsert, currentNode: leftchild) //then make recursive call with the left child as the current node
             } else {
                 currentNode.leftChild = nodeToInsert  //if there isn't a left child already, then set left child to the node to insert
                 nodeToInsert.parent = currentNode
+                print("inserted left child of \(currentNode.data)")
+                if let parent = currentNode.parent {
+                    rebalanceTree(parent)
+                }
             }
-            
-            if let parent = currentNode.parent {
-                rebalanceTree(parent)
-            }
-            
         } else if nodeToInsert.data > currentNode.data {  //if the value is greater than current value, then check right child...
             if let rightChild = currentNode.rightChild {  //if there is a right child already...
                 insertNodeIntoTree(nodeToInsert, currentNode: rightChild)  //then make recursive call with the right child as the current node
             } else {
                 currentNode.rightChild = nodeToInsert  //if there isn't a right child already, then set right child to the node to insert
                 nodeToInsert.parent = currentNode
-            }
-            
-            if let parent = currentNode.parent {
-                rebalanceTree(parent)
+                print("inserted right child of \(currentNode.data): \(currentNode.rightChild?.data)")
+                if let parent = currentNode.parent {
+                    rebalanceTree(parent)
+                }
             }
             
         } else {  //node's value equal's current value
@@ -176,40 +177,53 @@ class BalancedTree<T: Comparable> {
     private func rotateLeft(nodeToRotate: Node<T>?) {
         
         //when rotating a node LEFT:
-        //1.  node's RIGHT child becomes the node's parent
-        //2.  node becomes that child's (now the parent) LEFT child
+        //1.  node's original parent's RIGHT child is now the node's RIGHT child
+        //2.  node's RIGHT child becomes the node's parent and the node becomes that child's (now the parent) LEFT child
         //3.  node's RIGHT child's LEFT child becomes the node's RIGHT child
         
+        //1.
         if nodeToRotate?.parent == nil {  //if parent == nil, then we are rotating the root, which means the root needs to be updated to the new node
             root = nodeToRotate?.rightChild
             root?.parent = nil
+        } else {
+            nodeToRotate?.parent?.rightChild = nodeToRotate?.rightChild
+            nodeToRotate?.rightChild?.parent = nodeToRotate?.parent
         }
         
         let tempChildToMove = nodeToRotate?.rightChild?.leftChild
         
+        //2.
         nodeToRotate?.parent = nodeToRotate?.rightChild
         nodeToRotate?.rightChild?.leftChild = nodeToRotate
+        //3.
         nodeToRotate?.rightChild = tempChildToMove
-
+        tempChildToMove?.parent = nodeToRotate
     }
     
     private func rotateRight(nodeToRotate: Node<T>?) {
         
         //when rotating a node RIGHT:
-        //1.  node's LEFT child becomes the node's parent
-        //2.  node becomes that child's (now the parent) RIGHT child
+        //1.  node's original parent's LEFT child is now the node's LEFT child
+        //2.  node's LEFT child becomes the node's parent and the node becomes that child's (now the parent) RIGHT child
         //3.  node's LEFT child's RIGHT child becomes the node's LEFT child
         
+        //1.
         if nodeToRotate?.parent == nil {  //if parent == nil, then we are rotating the root, which means the root needs to be updated to the new node
             root = nodeToRotate?.leftChild
             root?.parent = nil
+        } else {
+            nodeToRotate?.parent?.leftChild = nodeToRotate?.leftChild
+            nodeToRotate?.leftChild?.parent = nodeToRotate?.parent
         }
         
         let tempChildToMove = nodeToRotate?.leftChild?.rightChild
         
+        //2.
         nodeToRotate?.parent = nodeToRotate?.leftChild
         nodeToRotate?.leftChild?.rightChild = nodeToRotate
+        //3.
         nodeToRotate?.leftChild = tempChildToMove
+        tempChildToMove?.parent = nodeToRotate
     }
     
     func traverseTreeInOrder() {  //starting with the minimum value, visit its root, then its root's right substree, which may contain another tree, so we do this recursively (i.e. when a right node contains another tree, then visit left, root, right, etc.); work our way up the the entire tree's root, then down the right side in a similar way (left, root, right in recursive manner)
