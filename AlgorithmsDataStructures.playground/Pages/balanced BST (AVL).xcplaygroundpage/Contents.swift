@@ -306,6 +306,7 @@ myTree2.insertData(6)
 myTree2.insertData(7)
 myTree2.insertData(16)
 myTree2.insertData(15)
+myTree2.insertData(14)
 
 myTree2.traverseTreeInOrder()
 myTree2.root?.data
@@ -314,6 +315,7 @@ myTree2.root?.leftChild?.leftChild?.data
 myTree2.root?.leftChild?.rightChild?.data
 myTree2.root?.rightChild?.data
 myTree2.root?.rightChild?.leftChild?.data
+myTree2.root?.rightChild?.leftChild?.leftChild?.data
 myTree2.root?.rightChild?.rightChild?.data
 myTree2.root?.rightChild?.rightChild?.leftChild?.data
 myTree2.root?.rightChild?.rightChild?.rightChild?.data
