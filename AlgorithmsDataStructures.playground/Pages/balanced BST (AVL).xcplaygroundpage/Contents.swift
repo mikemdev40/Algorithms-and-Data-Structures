@@ -32,6 +32,8 @@ class Node<T: Comparable> {
 class BalancedTree<T: Comparable> {
     
     private var root: Node<T>?
+    private var minNode: Node<T>?
+    
     
     func insertData(dataToInsert: T) {
         
@@ -157,9 +159,10 @@ class BalancedTree<T: Comparable> {
             return nil
         }
         if let leftChild = currentNode?.leftChild {
-            findMin(leftChild)
+            return findMin(leftChild)
+        } else {
+            return currentNode
         }
-        return currentNode
     }
     
     //public method that returns the right most (maximum) node
@@ -173,9 +176,10 @@ class BalancedTree<T: Comparable> {
             return nil
         }
         if let rightChild = currentNode?.rightChild {
-            findMin(rightChild)
+            return findMax(rightChild)
+        } else {
+            return currentNode
         }
-        return currentNode
     }
     
     private func rotateLeft(nodeToRotate: Node<T>?) {
@@ -319,3 +323,6 @@ myTree2.root?.rightChild?.leftChild?.leftChild?.data
 myTree2.root?.rightChild?.rightChild?.data
 myTree2.root?.rightChild?.rightChild?.leftChild?.data
 myTree2.root?.rightChild?.rightChild?.rightChild?.data
+
+myTree2.getMinNode()?.data
+myTree2.getMaxValue()?.data
