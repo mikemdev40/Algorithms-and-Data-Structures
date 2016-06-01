@@ -250,8 +250,25 @@ class BalancedTree<T: Comparable> {
         }
     }
     
-    func searchForValue(valueToFind: T) {
+    func searchForValue(valueToFind: T) -> Node<T>? {
+        return searchTree(valueToFind, currentNode: root)
+    }
+    
+    private func searchTree(valueToFind: T, currentNode: Node<T>?) -> Node<T>? {
+     
+        if currentNode == nil {
+            print("value not found")
+            return nil
+        }
         
+        if valueToFind > currentNode?.data {
+            return searchTree(valueToFind, currentNode: currentNode?.rightChild)
+        } else if valueToFind < currentNode?.data {
+            return searchTree(valueToFind, currentNode: currentNode?.leftChild)
+        } else {
+            print("found!")
+            return currentNode
+        }
     }
 }
 
@@ -326,3 +343,10 @@ myTree2.root?.rightChild?.rightChild?.rightChild?.data
 
 myTree2.getMinNode()?.data
 myTree2.getMaxValue()?.data
+myTree2.searchForValue(6)?.data
+myTree2.searchForValue(10)?.data
+myTree2.searchForValue(1)?.data
+myTree2.searchForValue(16)?.data
+myTree2.searchForValue(0)?.data
+myTree2.searchForValue(9)?.data
+myTree2.searchForValue(230)?.data
