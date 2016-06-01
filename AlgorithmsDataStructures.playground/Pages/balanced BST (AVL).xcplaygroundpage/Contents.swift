@@ -33,7 +33,7 @@ class BalancedTree<T: Comparable> {
     
     private var root: Node<T>?
     private var minNode: Node<T>?
-    
+    private var size: Int = 0
     
     func insertData(dataToInsert: T) {
         
@@ -44,6 +44,7 @@ class BalancedTree<T: Comparable> {
             insertNodeIntoTree(newNode, currentNode: root)
         } else {
             root = newNode
+            size += 1
         }
     }
     
@@ -58,6 +59,7 @@ class BalancedTree<T: Comparable> {
                 currentNode.leftChild = nodeToInsert  //if there isn't a left child already, then set left child to the node to insert
                 nodeToInsert.parent = currentNode
                 print("inserted left child of \(currentNode.data)")
+                size += 1
                 if let parent = currentNode.parent {
                     rebalanceTree(parent)
                 }
@@ -69,6 +71,7 @@ class BalancedTree<T: Comparable> {
                 currentNode.rightChild = nodeToInsert  //if there isn't a right child already, then set right child to the node to insert
                 nodeToInsert.parent = currentNode
                 print("inserted right child of \(currentNode.data)")
+                size += 1
                 if let parent = currentNode.parent {
                     rebalanceTree(parent)
                 }
@@ -270,6 +273,10 @@ class BalancedTree<T: Comparable> {
             return currentNode
         }
     }
+    
+    func getTreeSize() -> Int {
+        return size
+    }
 }
 
 //let myTree = BalancedTree<String>()
@@ -350,3 +357,4 @@ myTree2.searchForValue(16)?.data
 myTree2.searchForValue(0)?.data
 myTree2.searchForValue(9)?.data
 myTree2.searchForValue(230)?.data
+myTree2.getTreeSize()
