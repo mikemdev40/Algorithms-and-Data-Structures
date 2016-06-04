@@ -29,6 +29,71 @@ class Node<T: Comparable> {
     }
 }
 
+class QueueNode<T: Comparable> {  //single linked list (saves on memory; we only care about one direction since we are implementing a queue that processes FIFO)
+    
+    var node: Node<T>
+    var nextNode: QueueNode?
+    
+    init(node: Node<T>) {
+        self.node = node
+    }
+}
+
+class Queue<T: Comparable> {  // unidirectional linked list implementation
+    
+    private var start: QueueNode<T>?
+    private var end: QueueNode<T>?
+    private var count = 0
+    
+    func enqueue(node: QueueNode<T>) {
+        if start == nil {
+            start = node
+            end = node
+        } else {
+            end?.nextNode = node
+            end = node
+        }
+        
+        count += 1
+    }
+    
+    func dequeue() -> QueueNode<T>? {
+        if start == nil {
+            print("no node objects in queue")
+            return nil
+        }
+        
+        count -= 1
+        
+        let nodeToReturn = start
+        start = nodeToReturn?.nextNode
+        
+        return nodeToReturn
+    }
+    
+    func getCount() -> Int {
+        return count
+    }
+    
+    func printQueue() -> String {
+        var queueAsString = ""
+        if start == nil {
+            return queueAsString
+        }
+        
+        var node = start
+        
+        while node != nil {
+            if let data = node?.node.data {
+                queueAsString += "\(data) "
+            }
+            node = node?.nextNode
+        }
+        return queueAsString
+    }
+
+}
+
 class BalancedTree<T: Comparable> {
     
     private var root: Node<T>?
@@ -149,6 +214,17 @@ class BalancedTree<T: Comparable> {
         
         //KEEP IN MIND: height!
         
+        if let nodeToDelete = searchForValue(valueToDelete) {
+            print("found a node to delete")
+            deleteNode(nodeToDelete)
+        } else {
+            print("did not find a node to delete")
+        }
+        
+    }
+    
+    private func deleteNode(nodeToDelete: Node<T>) {
+        //TODO  implement delete
     }
     
     //public method that returns the left most (minimum) node
@@ -250,6 +326,32 @@ class BalancedTree<T: Comparable> {
             root.traverseNode()
         } else {
             print("no nodes to traverse!")
+        }
+    }
+    
+    func breadthFirstSearch() {
+        
+        let queue = Queue<T>()
+        
+        guard let startingNode = root else {
+            print("no nodes on which to perform a BFS")
+            return
+        }
+        
+        queue.enqueue(QueueNode(node: startingNode))
+        
+        var nodeBeingProcessed: Node<T>? = startingNode
+        
+        while nodeBeingProcessed != nil {
+            nodeBeingProcessed = queue.dequeue()?.node
+            print("processing \(nodeBeingProcessed?.data)")
+            if let leftChild = nodeBeingProcessed?.leftChild {
+                queue.enqueue(QueueNode(node: leftChild))
+            }
+            if let rightChild = nodeBeingProcessed?.rightChild {
+                queue.enqueue(QueueNode(node: rightChild))
+            }
+            print(queue.printQueue())
         }
     }
     
@@ -358,3 +460,5 @@ myTree2.searchForValue(0)?.data
 myTree2.searchForValue(9)?.data
 myTree2.searchForValue(230)?.data
 myTree2.getTreeSize()
+
+myTree2.breadthFirstSearch()

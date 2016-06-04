@@ -16,7 +16,7 @@ class Node {
 }
 
 
-class Queue {  //linked list implementation
+class Queue {  //doubly linked list implementation
     
     private var start: Node?
     private var end: Node?
@@ -35,8 +35,8 @@ class Queue {  //linked list implementation
     
         count += 1
     }
-    
-    //O(N) time (single while loop that iterates throgh)
+
+    //O(1) time (no loops, etc.)
     func dequeue() -> Node? {
         if start == nil || end == nil {
             print("no node objects in queue")
