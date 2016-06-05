@@ -9,5 +9,6 @@
         <page name='binary search'/>
         <page name='queue as linked list'/>
         <page name='balanced BST (AVL)'/>
+        <page name='heap'/>
     </pages>
 </playground>
