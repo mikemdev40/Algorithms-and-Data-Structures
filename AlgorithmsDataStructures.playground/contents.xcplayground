@@ -10,6 +10,7 @@
         <page name='queue as linked list'/>
         <page name='balanced BST (AVL)'/>
         <page name='heap'/>
-        <page name='sets &amp; priority queues &amp; "deque"'/>
+        <page name='sets &amp; priority queues &amp; deque'/>
+        <page name='hash table'/>
     </pages>
 </playground>

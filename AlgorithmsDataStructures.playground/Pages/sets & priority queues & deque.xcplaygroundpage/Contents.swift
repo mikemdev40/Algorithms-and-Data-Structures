@@ -1,7 +1,7 @@
 //: [Previous](@previous)
 
 //reading Data Structures and Algorithms by Barnett & Del Tongo
-//CHAPTER ON SETS
+//CHAPTERS ON SETS & QUEUES
 
 import Foundation
 
